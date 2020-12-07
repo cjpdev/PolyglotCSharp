@@ -46,7 +46,7 @@ namespace PolyglotCSharp
 
             if (bookCodeKomodo != null)
             {
-                BookInfo(filename, bookname);
+                TestCaseBookInfo(filename, bookname);
             } else
             {
                 System.Console.WriteLine("Could not load openbook {0}", filename);
@@ -60,7 +60,7 @@ namespace PolyglotCSharp
 
             if (bookCodeKomodo != null)
             {
-                BookInfo(filename, bookname);
+                TestCaseBookInfo(filename, bookname);
             }
             else
             {
@@ -78,7 +78,7 @@ namespace PolyglotCSharp
 
         }
 
-        static void BookInfo(string filename, string bookname)
+        static void TestCaseBookInfo(string filename, string bookname)
         {
             
             OpeningBooks.Book book = OpeningBooks.GetBook(bookname);
@@ -89,7 +89,7 @@ namespace PolyglotCSharp
 
                 System.Console.WriteLine("\nBook has {0} entries.", (book.Count));
 
-                ShowRangeOfMoves(book);
+                TestCaseShowRangeOfMoves(book);
 
                 string fenStartPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
                 System.UInt64 hashStartPos = 0x463b96181691fc9c;
@@ -100,7 +100,7 @@ namespace PolyglotCSharp
                     System.Console.WriteLine("\n\nBook has starting position move(s),\nfor FEN {0}", fenStartPos);
                 }
 
-                TestHash(book, hashStartPos, "e2e4");
+                TestCaseHash(book, hashStartPos, "e2e4");
 
                 List<OpeningBooks.Move> mlstA = OpeningBooks.GetMoveList(book, 0x463b96181691fc9c);
                 List<OpeningBooks.Move> mlstB = OpeningBooks.GetMoveList(book, 0x5c3f9b829b279560);
@@ -114,7 +114,7 @@ namespace PolyglotCSharp
             }
         }
 
-        static void ShowRangeOfMoves(Dictionary<System.UInt64, List<OpeningBooks.Move>> book)
+        static void TestCaseShowRangeOfMoves(Dictionary<System.UInt64, List<OpeningBooks.Move>> book)
         {
             // count each keys that have multiply move to select from.
             int[] multiMoveKeys = new int[10000]; // Never this big
@@ -142,7 +142,7 @@ namespace PolyglotCSharp
         }
 
 
-        static bool TestHash(Dictionary<System.UInt64, List<OpeningBooks.Move>> book, System.UInt64 hash, string strmove)
+        static bool TestCaseHash(Dictionary<System.UInt64, List<OpeningBooks.Move>> book, System.UInt64 hash, string strmove)
         {
             bool result = false;
             int found = -1;
