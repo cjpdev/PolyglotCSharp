@@ -67,12 +67,18 @@ namespace PolyglotCSharp
         /// </summary>
         public class Book : Dictionary<System.UInt64, List<Move>>
         {
-
-            public void Merge(Book book, bool debug = false)
+            /// <summary>
+            /// Merge with another book
+            /// 
+            /// </summary>
+            /// <param name="book"></param>
+            /// <param name="debug"></param>
+            /// <returns>True if some entries merged.</returns>
+            public bool Merge(Book book, bool debug = false)
             {
                 int merged = 0;
                 int count = 0;
-                int currentLen = Count;
+                int startCount = Count;
 
                 Book deltaBook = new Book();
 
@@ -152,11 +158,12 @@ namespace PolyglotCSharp
                 if (debug)
                 {
                     System.Console.WriteLine("\nMerge books\n\nOriginal num of hashs {0}, with {1} new hashs added. Test pass:{2}",
-                    currentLen, count, (currentLen + count == Count));
+                    startCount, count, (startCount + count == Count));
 
                     System.Console.WriteLine("{0} hashs where merged with existing hashs", merged);
                 }
 
+                return (startCount < Count) || merged > 0;
             }
         }
 
