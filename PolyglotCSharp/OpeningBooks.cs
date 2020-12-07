@@ -34,7 +34,8 @@ namespace PolyglotCSharp
    
     public static class OpeningBooks
     {
-        private static Dictionary<string, Book> books = new Dictionary<string, Book>();
+   
+        internal static Dictionary<string, Book> books = new Dictionary<string, Book>();
 
         // Fast lookup square name to index
         public readonly static Dictionary<string, int> squareNames = new Dictionary<string, int>()
@@ -65,8 +66,37 @@ namespace PolyglotCSharp
         /// <summary>
         /// Book:Dictionary<System.UInt64, List<Move>>
         /// </summary>
-        public class Book : Dictionary<System.UInt64, List<Move>>
+        [Serializable()]
+        public class Book
         {
+            public Dictionary<System.UInt64, List<Move>> data = new Dictionary<System.UInt64, List<Move>>();
+
+            public List<Move> this[System.UInt64 key]
+            {
+                get { return data[key]; }
+                set { data[key] = value;}
+            }
+
+            public Dictionary<System.UInt64, List<Move>>.Enumerator GetEnumerator()
+            {
+                return data.GetEnumerator();
+            }
+            public void Add(System.UInt64 key, List<Move> value)
+            {
+                data.Add(key, value);
+            }
+            public bool ContainsKey(System.UInt64 key)
+            {
+                return data.ContainsKey(key);
+            }
+            public int Count
+            {
+                get { return data.Count; }
+            }
+            public Book()
+            {
+
+            }
             /// <summary>
             /// Merge with another book
             /// 
@@ -82,7 +112,7 @@ namespace PolyglotCSharp
 
                 Book deltaBook = new Book();
 
-                foreach (var entry in book)
+                foreach (var entry in data)
                 {
                     // book Hash moves need to merge with target moves 
 
@@ -94,7 +124,7 @@ namespace PolyglotCSharp
                         {
                             // Compare each move in the target (this book) list with current move from source
 
-                            foreach (Move moveTarget in this[entry.Key])
+                            foreach (Move moveTarget in data[entry.Key])
                             {
                                 if (moveSource.Compare(moveTarget)) // souce compare with ( this )
                                 {
@@ -113,7 +143,7 @@ namespace PolyglotCSharp
                     }
                     else
                     {
-                        this[entry.Key] = entry.Value;
+                        data[entry.Key] = entry.Value;
                         count++;
                     }
                 }
@@ -170,6 +200,7 @@ namespace PolyglotCSharp
         /// <summary>
         /// Hold information about the move.
         /// </summary>
+        [Serializable()]
         public class Move
         {
             private int _move;
@@ -323,12 +354,17 @@ namespace PolyglotCSharp
         /// <returns>A Book or null if book could not be loaded</returns>
         public static Book LoadBook(string bookname, string fileName)
         {
-            Book book = new Book();
-          
+            if(books.ContainsKey(bookname))
+            {
+                return books[bookname];
+            }
+
             if(!File.Exists(fileName))
             {
                 return null;
             }
+
+            Book book = new Book();
 
             Stream stream = File.OpenRead(fileName);
            
@@ -344,21 +380,27 @@ namespace PolyglotCSharp
                 {
                     hash = ReadValue(binaryReader, 8);
 
-                    Move moves = new Move(
+                    Move move = new Move(
                         (int)ReadValue(binaryReader, 2), // move
                         (int)ReadValue(binaryReader, 2), // weight
                         (int)ReadValue(binaryReader, 4)); // learn
 
-                    if (moves.isValid())
+                    if (move.isValid())
                     {
                         if (book.ContainsKey(hash))
                         {
-                            book[hash].Add(moves);
+                            bool found = book[hash].Exists(x => x.strmove == move.strmove);
+                            if (found == false)
+                            {
+                                book[hash].Add(move);
+                            } 
                         }
                         else
                         {
-                            List<Move> list = new List<Move>();
-                            list.Add(moves);
+                            List<Move> list = new List<Move>
+                            {
+                                move
+                            };
                             book.Add(hash, list);
                         }
                     }

@@ -34,9 +34,34 @@ namespace PolyglotCSharp
 {
     class Program
     {
+        static void TestSnapshotSave()
+        {
+            string filename = "..\\..\\..\\..\\..\\book\\komodo.bin";
+            string bookname = "komodo";
+
+            System.Console.WriteLine("Try to load opening book {0}", filename);
+            OpeningBooks.Book bookCodeKomodo = OpeningBooks.LoadBook(bookname, filename);
+
+            if (bookCodeKomodo != null)
+            {
+                SnapshotBooks.Save("kimodo.gz", true);
+            }
+            else
+            {
+                System.Console.WriteLine("Could not load openbook {0}", filename);
+            }
+        }
+
+        static void TestSnapshotLoad()
+        {
+           SnapshotBooks.Load("kimodo.gz", true);
+           OpeningBooks.Book bookCodeKomodo = OpeningBooks.GetBook("komodo");
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine("Chay's chess opening book, and data checker.\n");
+
 
             string filename = "..\\..\\..\\..\\..\\book\\komodo.bin";
             string bookname = "komodo";
@@ -114,7 +139,7 @@ namespace PolyglotCSharp
             }
         }
 
-        static void ShowRangeOfMoves(Dictionary<System.UInt64, List<OpeningBooks.Move>> book)
+        static void ShowRangeOfMoves(OpeningBooks.Book book)
         {
             // count each keys that have multiply move to select from.
             int[] multiMoveKeys = new int[10000]; // Never this big
@@ -142,7 +167,7 @@ namespace PolyglotCSharp
         }
 
 
-        static bool TestHash(Dictionary<System.UInt64, List<OpeningBooks.Move>> book, System.UInt64 hash, string strmove)
+        static bool TestHash(OpeningBooks.Book book, System.UInt64 hash, string strmove)
         {
             bool result = false;
             int found = -1;
