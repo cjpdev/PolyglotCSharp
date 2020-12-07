@@ -36,12 +36,12 @@ namespace PolyglotCSharp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Chay's chess open book data checker.\n");
+            Console.WriteLine("Chay's chess opening book, and data checker.\n");
 
             string filename = "..\\..\\..\\..\\..\\book\\komodo.bin";
             string bookname = "komodo";
 
-            System.Console.WriteLine("Try load openbook {0}", filename);
+            System.Console.WriteLine("Try to load opening book {0}", filename);
             OpeningBooks.Book bookCodeKomodo = OpeningBooks.LoadBook(bookname, filename);
 
             if (bookCodeKomodo != null)
@@ -49,10 +49,10 @@ namespace PolyglotCSharp
                 BookInfo(filename, bookname);
             } else
             {
-                System.Console.WriteLine("Could load openbook {0}", filename);
+                System.Console.WriteLine("Could not load openbook {0}", filename);
             }
 
-            System.Console.WriteLine("Try load openbook {0}", filename);
+            System.Console.WriteLine("Try to load opening book {0}", filename);
             filename = "..\\..\\..\\..\\..\\book\\codekiddy.bin";
             bookname = "codekiddy";
 
@@ -64,7 +64,7 @@ namespace PolyglotCSharp
             }
             else
             {
-                System.Console.WriteLine("Could load openbook {0}", filename);
+                System.Console.WriteLine("Could not load opening book {0}", filename);
             }
 
             if (bookCodeKomodo != null && bookCodeKomodo != null)
@@ -73,7 +73,7 @@ namespace PolyglotCSharp
                 
             } else
             {
-                System.Console.WriteLine("Could not try merging books required books not loaded.");
+                System.Console.WriteLine("Unable to merge books, as required book(s) not loaded.");
             }
 
         }
