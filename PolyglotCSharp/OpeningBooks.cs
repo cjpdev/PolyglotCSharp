@@ -29,7 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace PolyglotCSharp
+namespace Chess.utils
 {
    
     public static class OpeningBooks

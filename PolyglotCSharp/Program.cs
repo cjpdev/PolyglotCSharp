@@ -30,7 +30,7 @@ using System.Collections.Generic;
 // Polyglot: Chess OpenBook reader and checker.   //
 // Can also mergw books: TODO Display board     //
 //////////////////////////////////////////////////
-namespace PolyglotCSharp
+namespace Chess.utils
 {
     class Program
     {
