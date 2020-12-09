@@ -426,7 +426,7 @@ namespace Chess.Utils
         {
             Book book = null;
 
-            if(books.ContainsKey(name))
+            if(name != null && books.ContainsKey(name))
             {
                 book = books[name];
             }
