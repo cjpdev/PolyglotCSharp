@@ -318,14 +318,9 @@ namespace Chess.Utils
             return r;
         }
 
-        public static bool hasBooks()
+        public static bool HasBooks
         {
-            if(books.Count > 0)
-            {
-                return true;
-            }
-
-            return false;
+            get { return (books.Count > 0);  } 
         }
 
 
@@ -349,7 +344,7 @@ namespace Chess.Utils
         /// <returns>A Book or null if book could not be loaded</returns>
         public static Book LoadBook(string bookname, string fileName)
         {
-            if(!File.Exists(fileName))
+            if(!File.Exists(fileName) && bookname != null)
             {
                 return null;
             }

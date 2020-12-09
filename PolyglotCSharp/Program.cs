@@ -70,12 +70,12 @@ namespace Chess.Utils
             if (bookCodeKomodo != null && bookCodeKomodo != null)
             {
                 bookCodeKiddy.Merge(bookCodeKomodo, true);
-                
-            } else
+
+            }
+            else
             {
                 System.Console.WriteLine("Unable to merge books, as required book(s) not loaded.");
             }
-
         }
 
         static void TestCaseBookInfo(string filename, string bookname)
