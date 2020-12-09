@@ -29,7 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Chess.utils
+namespace Chess.Utils
 {
    
     public static class OpeningBooks
@@ -63,10 +63,13 @@ namespace Chess.utils
         };
 
         /// <summary>
-        /// Book:Dictionary<System.UInt64, List<Move>>
+        /// Book Type:Dictionary<System.UInt64, List<Move>>
         /// </summary>
         public class Book : Dictionary<System.UInt64, List<Move>>
         {
+            public string bookname = "";
+            public string sourcefile = "";
+
             /// <summary>
             /// Merge with another book
             /// 
@@ -315,6 +318,29 @@ namespace Chess.utils
             return r;
         }
 
+        public static bool hasBooks()
+        {
+            if(books.Count > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+        public static List<string> GetBookNames()
+        {
+            List<string> names = new List<string>();
+
+           foreach(var entry in books)
+            {
+                names.Add(entry.Key);
+            }
+
+            return names;
+        }
+
         /// <summary>
         /// Load a opening book into Books collection
         /// </summary>
@@ -323,12 +349,26 @@ namespace Chess.utils
         /// <returns>A Book or null if book could not be loaded</returns>
         public static Book LoadBook(string bookname, string fileName)
         {
-            Book book = new Book();
-          
             if(!File.Exists(fileName))
             {
                 return null;
             }
+
+            if(books.ContainsKey(bookname))
+            {
+                return books[bookname];
+            }
+
+            foreach(KeyValuePair<string, Book> b in books)
+            {
+                if(b.Value.sourcefile == fileName)
+                {
+                    return b.Value; // the book
+                }
+            }
+
+            Book book = new Book();
+
 
             Stream stream = File.OpenRead(fileName);
            
